@@ -1,9 +1,11 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { ApiBadRequestResponse, ApiCreatedResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from '../auth/public.decorator.js';
 import { AddCartDto } from './dto/add-cart.dto.js';
 import { CartResponseDto } from './dto/cart-response.dto.js';
 import { OrdersService } from './orders.service.js';
 
+@Public()
 @ApiTags('carts')
 @Controller('carts')
 export class CartsController {

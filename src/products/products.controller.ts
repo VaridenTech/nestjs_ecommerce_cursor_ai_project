@@ -1,5 +1,6 @@
 import { Controller, Get, Param, ParseIntPipe, Query } from '@nestjs/common';
 import { ApiNotFoundResponse, ApiOkResponse, ApiTags } from '@nestjs/swagger';
+import { Public } from '../auth/public.decorator.js';
 import { PaginationQueryDto } from './dto/pagination-query.dto.js';
 import {
   CategoryResponseDto,
@@ -8,6 +9,7 @@ import {
 } from './dto/product-response.dto.js';
 import { ProductsService } from './products.service.js';
 
+@Public()
 @ApiTags('products')
 @Controller('products')
 export class ProductsController {
