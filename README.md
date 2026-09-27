@@ -1,114 +1,70 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# ecommerce-api — โค้ดประกอบคอร์ส "สร้าง E-commerce API ด้วย NestJS + Cursor AI"
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+Repo นี้เก็บโค้ดของโปรเจกต์ `ecommerce-api` ตามคอร์สในคู่มือ (handbook) ทีละบทเรียน
+แต่ละ branch คือสภาพของโปรเจกต์ **ตอนจบบทนั้น** — ใช้เทียบกับงานของตัวเอง
+หรือ checkout ไปเริ่มบทถัดไปเมื่อโค้ดของเราพังจนไปต่อไม่ได้
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+Stack: NestJS 12 (ESM) · Prisma 7 + PostgreSQL 17 · class-validator · Swagger · JWT · Vitest
 
-## Description
+## เริ่มจาก branch ไหนก็ได้
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+```sh
+git clone https://github.com/VaridenTech/nestjs_ecommerce_cursor_ai_project.git
+cd nestjs_ecommerce_cursor_ai_project
+git checkout 16_post_carts_add        # branch ของบทที่ต้องการ (ดูตารางด้านล่าง)
 
-## Project setup
+npm install
+cp .env.example .env                  # ตั้งแต่บทที่ 05
+docker compose up -d                  # ตั้งแต่บทที่ 05
+npx prisma migrate dev                # ตั้งแต่บทที่ 08 (สร้างตารางตาม migration ของ branch นั้น)
+npx prisma generate                   # ตั้งแต่บทที่ 06 (src/generated/prisma ไม่ได้อยู่ใน git)
+npm run db:seed                       # ตั้งแต่บทที่ 09
 
-```bash
-$ npm install
+npm run start:dev                     # http://localhost:3000  (Swagger ที่ /api ตั้งแต่บทที่ 18)
+npm run test:e2e                      # ต้องเปิดฐานข้อมูลไว้
 ```
 
-## Compile and run the project
+**สลับ branch ย้อนหลัง:** ถ้าฐานข้อมูลมี migration ของบทที่ใหม่กว่า branch ที่ checkout
+ให้ล้างแล้วสร้างใหม่ด้วย `npx prisma migrate reset` (ข้อมูลในเครื่องจะหายทั้งหมด) แล้วรัน `npm run db:seed` อีกรอบ
 
-```bash
-# development
-$ npm run start
+## Branch ของแต่ละบท
 
-# watch mode
-$ npm run start:dev
+| บท | Branch | สิ่งที่เพิ่มในบทนี้ | e2e |
+| -- | ------ | ------------------- | --- |
+| 01 | — | ภาพรวมคอร์ส (ไม่มีโค้ด) | |
+| 02 | `02_scaffolding_the_project` | `nest new ecommerce-api` | 1 |
+| 03 | `03_capturing_the_dummyjson_contract` | `docs/api-spec.md` | 1 |
+| 04 | `04_cursor_rules_and_the_prompt_template` | `.cursor/rules/project.mdc` | 1 |
+| 05 | `05_running_postgresql` | `docker-compose.yml`, `.env.example` | 1 |
+| 06 | `06_setting_up_prisma` | Prisma 7, `PrismaService`, `ConfigModule` | 1 |
+| 07 | `07_modeling_products_in_prisma` | model `Category`, `Product`, `Review` | 1 |
+| 08 | `08_running_the_first_migration` | migration `init` | 1 |
+| 09 | `09_seeding_real_products` | `prisma/seed.ts` (faker, 208 สินค้า) | 1 |
+| 10 | `10_get_products_categories` | `GET /products/categories` | 1 |
+| 11 | `11_mapping_rows_to_the_contract` | `ProductResponseDto` + `product.mapper.ts` | 1 |
+| 12 | `12_get_product_by_id` | `GET /products/:id` + `test/products.e2e-spec.ts` | 5 |
+| 13 | `13_get_products_with_pagination` | `GET /products?skip&limit` + `ValidationPipe` | 8 |
+| 14 | `14_get_products_by_category` | `GET /products/category/:slug` | 10 |
+| 15 | `15_modeling_orders` | model `Order`, `OrderItem` + `AddCartDto` | 10 |
+| 16 | `16_post_carts_add` | `POST /carts/add` + `test/orders.e2e-spec.ts` | 11 |
+| 17 | `17_enabling_cors_and_port_config` | CORS | 11 |
+| 18 | `18_adding_swagger` | Swagger ที่ `/api` | 11 |
+| 19 | `19_documenting_dtos_and_responses` | decorator ของ Swagger | 11 |
+| 20 | `20_switching_the_react_app` | (แก้ฝั่ง React app เท่านั้น — โค้ดเท่ากับบทที่ 19) | 11 |
+| 21 | `21_adding_the_user_model` | `docs/auth-spec.md`, model `User` + enum `Role` | 11 |
+| 22 | `22_signup_endpoint` | `POST /auth/signup` (bcrypt) | 11 |
+| 23 | `23_login_and_access_token` | `POST /auth/login` (JWT) | 11 |
+| 24 | `24_the_jwt_auth_guard` | global `JwtAuthGuard`, `@Public()`, `GET /auth/me` | 11 |
+| 25 | `25_current_user_and_private_orders` | `@CurrentUser()`, `GET /orders/me`, Bearer ใน Swagger | 11 |
+| 26 | `26_refresh_token_rotation` | `POST /auth/refresh`, `POST /auth/logout` | 11 |
+| 27 | `27_roles_and_admin_endpoints` | `RolesGuard`, `GET /admin/orders` + `test/auth.e2e-spec.ts` | 19 |
+| 28 | `28_wrap_up` / `main` | โค้ดสุดท้าย + README นี้ | 19 |
 
-# production mode
-$ npm run start:prod
-```
+คอลัมน์ e2e คือจำนวน test ที่ `npm run test:e2e` ต้องผ่านบน branch นั้น (หลัง seed แล้ว)
 
-## Run tests
+## หมายเหตุ
 
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
-```
-
-## Deployment
-
-When you're ready to deploy your NestJS application to production, there are some key steps you can take to ensure it runs as efficiently as possible. Check out the [deployment documentation](https://docs.nestjs.com/deployment) for more information.
-
-If you are looking for a cloud-based platform to deploy your NestJS application, check out [Mau](https://mau.nestjs.com), our official platform for deploying NestJS applications on AWS. Mau makes deployment straightforward and fast, requiring just a few simple steps:
-
-```bash
-$ npm install -g @nestjs/mau
-$ mau deploy
-```
-
-With Mau, you can deploy your application in just a few clicks, allowing you to focus on building features rather than managing infrastructure.
-
-## Observability
-
-In production applications, observability is essential for understanding how your system behaves, detecting issues early, and maintaining reliable performance.
-
-[NestJS Observe](https://observe.nestjs.com) automatically instruments your NestJS application, giving you deep visibility into your system with minimal setup:
-
-- **Distributed tracing:** Follow requests across services and understand how they flow through your system.
-- **Waterfall analysis:** Visualize request execution and identify slow operations, bottlenecks, and unexpected delays.
-- **Performance analysis:** Analyze application performance in real time and quickly pinpoint areas that need optimization.
-- **Metrics:** Track key application and infrastructure metrics to understand system health and performance trends.
-- **Logging:** Centralize and correlate logs with traces and other telemetry to make debugging easier.
-- **Error tracking:** Detect errors quickly and investigate their root causes with the surrounding context.
-- **SLA monitoring:** Track service-level objectives and identify when your application is approaching or exceeding defined thresholds.
-- **Alarms and alerts:** Set up alerts for critical errors, performance degradation, SLA violations, and other anomalies so your team can react quickly.
-
-## Resources
-
-Check out a few resources that may come in handy when working with NestJS:
-
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Deploy your application to AWS with the help of [NestJS Mau](https://mau.nestjs.com) in just a few clicks.
-- Auto-instrument your application with [NestJS Observer](https://observer.nestjs.com). Distributed tracing, metrics, and logging made easy. Error tracking and performance monitoring for your NestJS applications.
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
-
-## Support
-
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
-
-## Stay in touch
-
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+- โค้ดใน `src/` สร้างจาก prompt ของ Cursor ในแต่ละบท — โค้ดที่ Cursor ให้คุณอาจหน้าตาต่างออกไปได้
+  สิ่งที่ต้องตรงกันคือ "ผลลัพธ์ที่ต้องได้" ของ prompt ไม่ใช่ตัวอักษรทุกตัว
+- `.env.example` ใช้ค่าสำหรับเครื่อง dev เท่านั้น ห้ามใช้ secret พวกนี้กับระบบจริง
+- `npm` รุ่นใหม่กั้น install script ไว้ บล็อก `allowScripts` ใน `package.json` จึงอนุมัติไว้เฉพาะแพ็กเกจที่คอร์สต้องใช้
