@@ -97,3 +97,17 @@ model OrderItem {
   @@index([orderId])
   @@index([productId])
 }
+
+enum Role {
+  USER
+  ADMIN
+}
+
+model User {
+  id           Int      @id @default(autoincrement())
+  email        String   @unique
+  passwordHash String
+  name         String
+  role         Role     @default(USER)
+  createdAt    DateTime @default(now())
+}
