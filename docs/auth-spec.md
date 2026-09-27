@@ -50,7 +50,7 @@ interface TokenPair {
 ## Errors
 
 - ไม่มี token, token ผิด หรือ token หมดอายุ → 401
-  { "message": "Unauthorized", "error": "Unauthorized", "statusCode": 401 }
+  { "message": "Unauthorized", "statusCode": 401 }
 - token ถูกต้องแต่ role ไม่พอ → 403
   { "message": "Forbidden resource", "error": "Forbidden", "statusCode": 403 }
 - อีเมลหรือรหัสผ่านผิดตอน login → 401 message "Invalid credentials"
