@@ -3,6 +3,7 @@ import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service.js';
 import { CurrentUser } from './current-user.decorator.js';
 import { LoginDto } from './dto/login.dto.js';
+import { RefreshDto } from './dto/refresh.dto.js';
 import { SignupDto } from './dto/signup.dto.js';
 import type { JwtPayload } from './jwt-payload.interface.js';
 import { Public } from './public.decorator.js';
@@ -22,6 +23,19 @@ export class AuthController {
   @HttpCode(HttpStatus.OK)
   login(@Body() dto: LoginDto) {
     return this.authService.login(dto);
+  }
+
+  @Public()
+  @Post('refresh')
+  @HttpCode(HttpStatus.OK)
+  refresh(@Body() dto: RefreshDto) {
+    return this.authService.refresh(dto);
+  }
+
+  @Post('logout')
+  @HttpCode(204)
+  logout(@CurrentUser() user: JwtPayload) {
+    return this.authService.logout(user.sub);
   }
 
   @Get('me')
