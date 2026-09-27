@@ -1,3 +1,4 @@
+import { ApiProperty } from '@nestjs/swagger';
 import { Type } from 'class-transformer';
 import {
   ArrayMinSize,
@@ -34,16 +35,19 @@ export class AddressDto {
 }
 
 export class AddCartDto {
+  @ApiProperty({ example: 1 })
   @IsInt()
   @Min(1)
   userId: number;
 
+  @ApiProperty({ type: [CartProductDto] })
   @IsArray()
   @ArrayMinSize(1)
   @ValidateNested({ each: true })
   @Type(() => CartProductDto)
   products: CartProductDto[];
 
+  @ApiProperty({ type: AddressDto })
   @ValidateNested()
   @Type(() => AddressDto)
   address: AddressDto;

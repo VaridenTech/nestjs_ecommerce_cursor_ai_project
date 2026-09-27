@@ -1,3 +1,5 @@
+import { ApiPropertyOptional } from '@nestjs/swagger';
+
 export class ProductDimensionsDto {
   width: number;
   height: number;
@@ -25,6 +27,7 @@ export class ProductResponseDto {
   description: string;
   category: string;
   price: number;
+  @ApiPropertyOptional()
   discountPercentage?: number;
   rating: number;
   stock: number;
