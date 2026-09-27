@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { INestApplication } from '@nestjs/common';
+import { INestApplication, ValidationPipe } from '@nestjs/common';
 import request from 'supertest';
 import { AppModule } from './../src/app.module.js';
 
@@ -12,6 +12,13 @@ describe('Products contract (e2e)', () => {
     }).compile();
 
     app = moduleFixture.createNestApplication();
+    app.useGlobalPipes(
+      new ValidationPipe({
+        whitelist: true,
+        transform: true,
+        transformOptions: { enableImplicitConversion: true },
+      }),
+    );
     await app.init();
   });
 
@@ -50,6 +57,33 @@ describe('Products contract (e2e)', () => {
   it('GET /products/abc → 400 with message', async () => {
     const response = await request(app.getHttpServer())
       .get('/products/abc')
+      .expect(400);
+
+    expect(response.body.message).toBeDefined();
+  });
+
+  it('GET /products?limit=5&skip=0 → limit and skip echo the request', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/products?limit=5&skip=0')
+      .expect(200);
+
+    expect(Object.keys(response.body).sort()).toEqual(['limit', 'products', 'skip', 'total']);
+    expect(response.body.limit).toBe(5);
+    expect(response.body.skip).toBe(0);
+    expect(response.body.products).toHaveLength(5);
+  });
+
+  it('GET /products?limit=0 → 400 (out of range)', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/products?limit=0')
+      .expect(400);
+
+    expect(response.body.message).toBeDefined();
+  });
+
+  it('GET /products?limit=101 → 400 (out of range)', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/products?limit=101')
       .expect(400);
 
     expect(response.body.message).toBeDefined();
