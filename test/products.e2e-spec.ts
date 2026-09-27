@@ -88,4 +88,22 @@ describe('Products contract (e2e)', () => {
 
     expect(response.body.message).toBeDefined();
   });
+
+  it('GET /products/category/groceries → total 27', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/products/category/groceries?limit=20&skip=0')
+      .expect(200);
+
+    expect(Object.keys(response.body).sort()).toEqual(['limit', 'products', 'skip', 'total']);
+    expect(response.body.total).toBe(27);
+    expect(response.body.products).toHaveLength(20);
+  });
+
+  it('GET /products/category/nope → 200, empty envelope', async () => {
+    const response = await request(app.getHttpServer())
+      .get('/products/category/nope?limit=5&skip=0')
+      .expect(200);
+
+    expect(response.body).toEqual({ products: [], total: 0, skip: 0, limit: 5 });
+  });
 });
