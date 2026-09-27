@@ -32,6 +32,10 @@ export class ProductsService {
     return this.paginate({}, query.skip, query.limit);
   }
 
+  findByCategory(slug: string, query: PaginationQueryDto) {
+    return this.paginate({ category: { slug } }, query.skip, query.limit);
+  }
+
   async findOne(id: number): Promise<ProductResponseDto> {
     const product = await this.prisma.product.findUnique({
       where: { id },
