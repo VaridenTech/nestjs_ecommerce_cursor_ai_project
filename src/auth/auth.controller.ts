@@ -1,4 +1,5 @@
 import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
+import { ApiBearerAuth } from '@nestjs/swagger';
 import { AuthService } from './auth.service.js';
 import { CurrentUser } from './current-user.decorator.js';
 import { LoginDto } from './dto/login.dto.js';
@@ -24,6 +25,7 @@ export class AuthController {
   }
 
   @Get('me')
+  @ApiBearerAuth()
   me(@CurrentUser() user: JwtPayload) {
     return { id: user.sub, email: user.email, role: user.role };
   }

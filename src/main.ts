@@ -18,6 +18,7 @@ async function bootstrap() {
     .setTitle('E-commerce API')
     .setDescription("E-commerce API designed from the React storefront's own contract (see docs/api-spec.md)")
     .setVersion('1.0')
+    .addBearerAuth()
     .build();
   SwaggerModule.setup('api', app, SwaggerModule.createDocument(app, config));
 
