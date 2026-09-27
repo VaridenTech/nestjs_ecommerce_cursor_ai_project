@@ -55,4 +55,14 @@ export class OrdersService {
 
     return toCartResponse(order);
   }
+
+  async findMine(userId: number): Promise<CartResponseDto[]> {
+    const orders = await this.prisma.order.findMany({
+      where: { userId },
+      orderBy: { id: 'desc' },
+      include: { items: { orderBy: { id: 'asc' } } },
+    });
+
+    return orders.map(toCartResponse);
+  }
 }

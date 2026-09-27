@@ -1,8 +1,9 @@
-import { Body, Controller, Get, HttpCode, HttpStatus, Post, Req } from '@nestjs/common';
+import { Body, Controller, Get, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { AuthService } from './auth.service.js';
+import { CurrentUser } from './current-user.decorator.js';
 import { LoginDto } from './dto/login.dto.js';
 import { SignupDto } from './dto/signup.dto.js';
-import type { AuthenticatedRequest } from './jwt-payload.interface.js';
+import type { JwtPayload } from './jwt-payload.interface.js';
 import { Public } from './public.decorator.js';
 
 @Controller('auth')
@@ -23,8 +24,7 @@ export class AuthController {
   }
 
   @Get('me')
-  me(@Req() request: AuthenticatedRequest) {
-    const { sub, email, role } = request.user;
-    return { id: sub, email, role };
+  me(@CurrentUser() user: JwtPayload) {
+    return { id: user.sub, email: user.email, role: user.role };
   }
 }
