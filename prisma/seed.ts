@@ -277,6 +277,8 @@ async function main(): Promise<void> {
 
   try {
     await prisma.$transaction(async (tx) => {
+      await tx.orderItem.deleteMany();
+      await tx.order.deleteMany();
       await tx.review.deleteMany();
       await tx.product.deleteMany();
       await tx.category.deleteMany();

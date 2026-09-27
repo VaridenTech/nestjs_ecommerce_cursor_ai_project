@@ -20,7 +20,7 @@ model Category {
 }
 
 model Product {
-  id                   Int      @id
+  id                   Int         @id
   title                String
   description          String
   price                Float
@@ -46,8 +46,9 @@ model Product {
   createdAt            DateTime
   updatedAt            DateTime
   categoryId           Int
-  category             Category @relation(fields: [categoryId], references: [id])
+  category             Category    @relation(fields: [categoryId], references: [id])
   reviews              Review[]
+  orderItems           OrderItem[]
 
   @@index([categoryId])
 }
@@ -62,5 +63,37 @@ model Review {
   productId     Int
   product       Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
 
+  @@index([productId])
+}
+
+model Order {
+  id              Int         @id @default(autoincrement())
+  userId          Int
+  address         String
+  email           String
+  phone           String
+  total           Float
+  discountedTotal Float
+  totalProducts   Int
+  totalQuantity   Int
+  createdAt       DateTime    @default(now())
+  items           OrderItem[]
+}
+
+model OrderItem {
+  id                 Int     @id @default(autoincrement())
+  orderId            Int
+  order              Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId          Int
+  product            Product @relation(fields: [productId], references: [id])
+  title              String
+  thumbnail          String
+  price              Float
+  discountPercentage Float?
+  quantity           Int
+  total              Float
+  discountedPrice    Float
+
+  @@index([orderId])
   @@index([productId])
 }
