@@ -65,4 +65,13 @@ export class OrdersService {
 
     return orders.map(toCartResponse);
   }
+
+  async findAll(): Promise<CartResponseDto[]> {
+    const orders = await this.prisma.order.findMany({
+      orderBy: { id: 'desc' },
+      include: { items: { orderBy: { id: 'asc' } } },
+    });
+
+    return orders.map(toCartResponse);
+  }
 }
